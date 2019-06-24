@@ -6,9 +6,9 @@ import 'lib-flexible';
 import axios from 'axios';
 
 
-import { Button, Row, Col,Search , Swipe , SwipeItem,Lazyload } from 'vant';
+import { Button, Row, Col,Search , Swipe , SwipeItem,Lazyload,List,Tabbar,TabbarItem } from 'vant';
 
-Vue.use(Button).use(Row).use(Col).use(Search).use(Swipe).use(SwipeItem).use(Lazyload);
+Vue.use(Button).use(Row).use(Col).use(Search).use(Swipe).use(SwipeItem).use(Lazyload).use(List).use(Tabbar).use(TabbarItem);
 
 
 Vue.config.productionTip = false;
