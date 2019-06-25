@@ -6,7 +6,7 @@ import "lib-flexible";
 import axios from "axios";
 import '@/styles/common.less';
 
-import { Button, Row, Col, Search, Swipe, SwipeItem, Lazyload, List, Tabbar, TabbarItem,Icon } from "vant";
+import { Button, Row, Col, Search, Swipe, SwipeItem, Lazyload, List, Tabbar, TabbarItem,Icon,Field,CellGroup,NavBar} from "vant";
 
 Vue.use(Button)
 	.use(Row)
@@ -18,7 +18,10 @@ Vue.use(Button)
 	.use(List)
 	.use(Tabbar)
     .use(TabbarItem)
-    .use(Icon);
+    .use(Icon)
+    .use(Field)
+    .use(CellGroup)
+    .use(NavBar)
 
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
