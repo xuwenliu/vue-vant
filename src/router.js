@@ -14,7 +14,6 @@ export default new Router({
 		},
 		{
 			path: "/main",
-			name: "main",
 			component: () => import(/* webpackChunkName: "main" */ "./views/Main.vue"),
 			children: [
 				{
@@ -26,6 +25,16 @@ export default new Router({
 					path: "categoryList",
 					name: "categoryList",
 					component: () => import(/* webpackChunkName: "main" */ "./views/CategoryList.vue"),
+                },
+                {
+					path: "cart",
+					name: "cart",
+					component: () => import(/* webpackChunkName: "main" */ "./views/Cart.vue"),
+                },
+                {
+					path: "member",
+					name: "member",
+					component: () => import(/* webpackChunkName: "main" */ "./views/Member.vue"),
 				},
 			],
 		},

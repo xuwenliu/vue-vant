@@ -4,7 +4,7 @@
 			<img v-lazy="goodsImage" width="90%">
 		</div>
 		<div class="goods-name">{{goodsName}}</div>
-		<div class="goods-price">￥{{goodsPrice}}</div>
+		<div class="goods-price">{{goodsPrice | currency}}</div>
 	</div>
 </template>
 

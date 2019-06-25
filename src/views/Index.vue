@@ -3,7 +3,7 @@
 		<div class="search-bar">
 			<van-row>
 				<van-col span="3">
-					<img class="location-icon" :src="locationIcon" width="80%">
+                    <van-icon class="location-icon" name="location-o" color="#fff" size=".8rem"></van-icon>
 				</van-col>
 				<van-col span="16">
 					<input type="text" class="search-input">
@@ -16,7 +16,7 @@
 		<!--swipwer area-->
 		<div class="swiper-area">
 			<van-swipe :autoplay="5000" :show-indicators="false">
-				<van-swipe-item v-for="(banner,index) in bannerPicArray" :key="index">
+				<van-swipe-item v-for="(banner,index) in slides" :key="index">
 					<img v-lazy="banner.image" width="100%">
 				</van-swipe-item>
 			</van-swipe>
@@ -39,11 +39,11 @@
 			<div class="recommend-title">商品推荐</div>
 			<div class="recommend-body">
 				<swiper :options="swiperOption">
-					<swiper-slide v-for="(item,index) in recommendGoods " :key="index">
+					<swiper-slide v-for="(item,index) in recommend " :key="index">
 						<div class="recommend-item">
 							<img :src="item.image" width="80%">
 							<div>{{item.goodsName}}</div>
-							<div>￥{{item.price}}(￥{{item.mallPrice}})</div>
+							<div>{{item.price | currency}}({{item.mallPrice | currency}})</div>
 						</div>
 					</swiper-slide>
 				</swiper>
@@ -76,7 +76,9 @@
 </template>
 <script>
 	import "swiper/dist/css/swiper.css";
-	import { swiper, swiperSlide } from "vue-awesome-swiper";
+    import { swiper, swiperSlide } from "vue-awesome-swiper";
+    import { mapState, mapActions } from 'vuex';
+    import { GET_INDEX_DATA} from '@/vuex/mutationTypes';
 	import floorComponent from "@/components/Floor";
 	import goodsInfo from "@/components/GoodsInfo";
 
@@ -86,41 +88,31 @@
 
 		data() {
 			return {
-				locationIcon: require("@/assets/images/location.png"),
-				bannerPicArray: [],
-				category: [],
-				adBanner: "",
 				swiperOption: {
 					slidesPerView: 3
 				},
-				recommendGoods: [],
-				floor1: [],
-				floor2: [],
-				floor3: [],
-				floorName: {},
-				hotGoods: []
 			};
-		},
+        },
+        computed:{
+            ...mapState('index',{
+                slides:state => state.slides,
+                category:state => state.category,
+                adBanner:state => state.adBanner,
+                recommend:state => state.recommend,
+                floor1:state => state.floor1,
+                floor2:state => state.floor2,
+                floor3:state => state.floor3,
+                floorName:state => state.floorName,
+                hotGoods:state => state.hotGoods,
+            })
+        },
 		mounted() {
-			this.getData();
+            this.getData();
 		},
 		methods: {
-			async getData() {
-				let res = await this.axios.get(
-					"https://www.easy-mock.com/mock/5ae2eeb23fbbf24d8cd7f0b6/SmileVue/index"
-				);
-				console.log(res);
-				let data = res.data.data;
-				this.bannerPicArray = data.slides;
-				this.category = data.category;
-				this.adBanner = data.advertesPicture.PICTURE_ADDRESS;
-				this.recommendGoods = data.recommend;
-				this.floor1 = data.floor1;
-				this.floor2 = data.floor2;
-				this.floor3 = data.floor3;
-				this.floorName = data.floorName;
-				this.hotGoods = data.hotGoods;
-			}
+            ...mapActions('index',{
+                getData:GET_INDEX_DATA
+            }),
 		}
 	};
 </script>
@@ -188,10 +180,12 @@
 	}
 
 	.hot-area {
-		text-align: center;
-		font-size: 14px;
-		height: 0.9rem;
-		line-height: 0.9rem;
+        text-align: center;
+        font-size: 14px;
+		.hot-title {
+			height: 0.9rem;
+			line-height: 0.9rem;
+		}
 	}
 	.hot-goods {
 		overflow: hidden;

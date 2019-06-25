@@ -1,11 +1,11 @@
 <template>
     <div>
-        CategoryList
+        cart
     </div>
 </template>
 <script>
 export default {
-    name:'categoryList'
+    name:'cart'
 }
 </script>
 <style lang="less" scoped>

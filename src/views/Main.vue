@@ -5,7 +5,7 @@
 				<router-view/>
 			</keep-alive>
 		</div>
-		<van-tabbar v-model="active" @change="changeTabbar(active)">
+		<van-tabbar v-model="active" @change="changeTabbar()">
 			<van-tabbar-item icon="shop">首页</van-tabbar-item>
 			<van-tabbar-item icon="records">列表</van-tabbar-item>
 			<van-tabbar-item icon="cart">购物车</van-tabbar-item>
@@ -14,42 +14,53 @@
 	</div>
 </template>
 <script>
+	import { mapState, mapMutations } from "vuex";
+    import { GET_ROUTES,CHANGE_ACTIVE} from "@/vuex/mutationTypes";
+    
 	export default {
 		data() {
-			return {
-				active: 0,
-                nowName: "", //当前路径
-                routes:[
-                    {value:0,name:'index'},
-                    {value:1,name:'categoryList'},
-                    {value:2,name:'cart'},
-                    {value:3,name:'member'},
-                ]
-			};
+			return {};
 		},
-		created() {
-			this.changeTabBarActive();
+		computed: {
+			...mapState("main", {
+				routes: state => state.routes
+			}),
+			active: {
+				get() {
+					return this.$store.state.main.active;
+				},
+				set(newValue) {
+					this.$store.state.main.active = newValue;
+				}
+			}
 		},
-		updated() {
+		mounted() {
+			this.getRoutes();
 			this.changeTabBarActive();
 		},
 		methods: {
+			...mapMutations("main", {
+				getRoutes: GET_ROUTES
+			}),
 			changeTabBarActive() {
-                this.nowName = this.$route.name;
-                this.routes.map(item=>{
-                    if(item.name === this.nowName){
-                        this.active = item.value;
-                    }
-                })
+				this.routes.map(item => {
+					if (item.name === this.$route.name) {
+						this.$store.commit(`main/${CHANGE_ACTIVE}`,item.value);
+					}
+				});
 			},
-			changeTabbar(active) {
-                this.$router.push({ name: this.routes[active].name });
+			changeTabbar() {
+                this.$store.commit(`main/${CHANGE_ACTIVE}`,this.active);
+				this.$router.push({ name: this.routes[this.active].name });
 			}
 		}
 	};
 </script>
 <style lang="less" scoped>
 	.main {
+        .main-div{
+            padding-bottom: 110px;
+        }
 		.van-tabbar {
 			height: 100px;
 		}
