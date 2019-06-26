@@ -11,6 +11,7 @@
 					label="账号"
 					placeholder="请输入6-12位中文数字字母下划线的账号"
 					:error-message="userNameErrorMsg"
+					@input="userNameChange"
 				/>
 
 				<van-field
@@ -20,35 +21,104 @@
 					label="密码"
 					placeholder="请输入6-20位数字字母下划线的密码"
 					:error-message="passwordErrorMsg"
+					@input="passwordChange"
 				/>
 			</van-cell-group>
-			<van-button round :loading="loading" type="danger" :loading-text="loadingText" size="large" @click="submit">注册</van-button>
+			<van-button
+				round
+				:loading="loading"
+				type="danger"
+				:loading-text="loadingText"
+				size="large"
+				@click="submit"
+			>注册</van-button>
 		</div>
 	</div>
 </template>
 <script>
+	import { mapActions } from "vuex";
+	import { USER_REGISTER } from "@/vuex/mutationTypes";
 	export default {
 		name: "register",
 		data() {
 			return {
 				userName: "",
 				userNameErrorMsg: "",
-				
-                password: "",
-                passwordErrorMsg: "",
-                
+
+				password: "",
+				passwordErrorMsg: "",
+
 				loadingText: "",
-                loading: false,
+				loading: false
 			};
+		},
+		created() {
+			if (localStorage.getItem("token")) {
+				this.$notify({
+					message: "您已经登录过了!",
+					onClose: () => {
+						this.$router.push({ name: "index" });
+					}
+				});
+			}
 		},
 		methods: {
 			onClickLeft() {
 				this.$router.go(-1);
-            },
-            submit(){
-                this.loading = true;
-                this.loadingText = '注册中...'
-            }
+			},
+			async submit() {
+				if (this.userNameChange() && this.passwordChange()) {
+					if (this.userName === this.password) {
+						this.$toast("账号和密码不能相同");
+						return;
+					}
+					this.loading = true;
+					this.loadingText = "注册中...";
+					let result = await this.register({
+						userName: this.userName,
+						password: this.password
+					});
+					if (result.data.success) {
+						this.loading = false;
+						this.loadingText = "";
+						localStorage.setItem("token", result.data.token);
+						this.$toast({
+							message: "注册成功！",
+							onClose: () => {
+								this.$router.push({ name: "index" });
+							}
+						});
+					} else {
+						this.loading = false;
+						this.loadingText = "";
+						this.$toast(result.data.msg);
+					}
+				}
+			},
+			...mapActions("user", {
+				register: USER_REGISTER
+			}),
+
+			userNameChange() {
+				let reg = /^[\u4E00-\u9FA5A-Za-z0-9_]{6,12}$/;
+				if (!reg.test(this.userName)) {
+					this.userNameErrorMsg = "账号格式错误！";
+					return false;
+				} else {
+					this.userNameErrorMsg = "";
+					return true;
+				}
+			},
+			passwordChange() {
+				let reg = /^[A-Za-z0-9_]{6,20}$/;
+				if (!reg.test(this.password)) {
+					this.passwordErrorMsg = "密码格式错误！";
+					return false;
+				} else {
+					this.passwordErrorMsg = "";
+					return true;
+				}
+			}
 		}
 	};
 </script>

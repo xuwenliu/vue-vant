@@ -6,8 +6,14 @@ import "lib-flexible";
 import axios from "axios";
 import '@/styles/common.less';
 
-import { Button, Row, Col, Search, Swipe, SwipeItem, Lazyload, List, Tabbar, TabbarItem,Icon,Field,CellGroup,NavBar} from "vant";
+import { Button, Row, Col, Search, Swipe, SwipeItem, Lazyload, List, Tabbar, TabbarItem,Icon,Field,CellGroup,NavBar,Toast,Notify} from "vant";
 
+Notify.setDefaultOptions({
+    className:'my-notify'
+})
+Toast.setDefaultOptions({
+    className:'my-toast'
+})
 Vue.use(Button)
 	.use(Row)
 	.use(Col)
@@ -22,6 +28,8 @@ Vue.use(Button)
     .use(Field)
     .use(CellGroup)
     .use(NavBar)
+    .use(Toast)
+    .use(Notify)
 
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;

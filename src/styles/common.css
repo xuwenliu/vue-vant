@@ -260,3 +260,19 @@ a:hover {
   content: "*";
   color: red;
 }
+.my-notify {
+  font-size: 30px;
+  line-height: 30px;
+  padding: 20px;
+  background: #07c160!important;
+  bottom: 0;
+  top: auto;
+}
+.my-toast {
+  font-size: 30px;
+  border-radius: 10px;
+}
+.my-toast .van-toast__text {
+  padding: 10px;
+  line-height: 1.5;
+}
