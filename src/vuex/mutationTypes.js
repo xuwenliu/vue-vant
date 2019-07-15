@@ -6,3 +6,9 @@ export const GET_INDEX_DATA = "index_get_index_data";
 export const USER_REGISTER = "user_register";
 export const USER_LOGIN = "user_login";
 export const USER_LOGOUT = "user_logout";
+
+//goods
+
+export const GOODS_GET_DETAIL_INFO = "goods_get_detail_info";
+
+
